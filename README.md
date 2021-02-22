@@ -6,7 +6,7 @@ The app:
 - shows 4 buttons with letters. When one of the letters is selected, the app either paints it
 green (for the good answer) or red (for the bad answer, painting the proper one blue).
 
-![good answer](/docs/good-example.jpg?raw=true =250x)
+![good answer](/docs/good-example.jpg =250x)
 ![bad answer](/docs/bad-example.jpg?raw=true =250x)
 
 ## Installation
