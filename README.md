@@ -6,8 +6,8 @@ The app:
 - shows 4 buttons with letters. When one of the letters is selected, the app either paints it
 green (for the good answer) or red (for the bad answer, painting the proper one blue).
 
-![good answer](/docs/good-example.jpg =250x)
-![bad answer](/docs/bad-example.jpg?raw=true =250x)
+
+**NOTE** Currently in Polish only. Pull requests to add support for other languages are welcome.
 
 ## Installation
 Clone the repository:
@@ -21,3 +21,10 @@ Build the project:
 ```
 
 Copy the file located in `./app/build/outputs/apk/debug/app-debug.apk` to your phone and install the app from it.
+
+
+## Screenshots
+
+![good answer](/docs/good-example.jpg?raw=true)
+
+![bad answer](/docs/bad-example.jpg?raw=true)
