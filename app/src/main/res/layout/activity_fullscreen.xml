@@ -38,7 +38,9 @@
                 android:id="@+id/button1"
                 android:layout_weight="1"
                 tools:ignore="NestedWeights"
-                android:autoSizeTextType="uniform"/>
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/comfortaa"
+                 />
 
         <Space
                 android:layout_width="10dp"
@@ -46,10 +48,12 @@
 
         <Button
                 android:text="Button"
+                android:textAllCaps="false"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button2"
                 android:layout_weight="1"
+                android:fontFamily="@font/comfortaa"
                 android:autoSizeTextType="uniform"/>
 
     </LinearLayout>
@@ -68,6 +72,7 @@
                 android:id="@+id/button3"
                 android:layout_weight="1"
                 tools:ignore="NestedWeights"
+                android:fontFamily="@font/comfortaa"
                 android:autoSizeTextType="uniform"/>
         <Space
                 android:layout_width="10dp"
@@ -78,6 +83,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/button4"
                 android:layout_weight="1"
+                android:fontFamily="@font/comfortaa"
                 android:autoSizeTextType="uniform"/>
     </LinearLayout>
 
@@ -88,14 +94,15 @@
             android:layout_weight="1"
             android:weightSum="2">
 
-<!--        <Button
-                android:id="@+id/reset"
+        <Button
+                android:id="@+id/changeLetterSize"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="&#9881;"
+                android:text="A&#8646;a"
                 tools:ignore="NestedWeights"
-                android:autoSizeTextType="uniform"/>-->
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/comfortaa"/>
 
         <TextView
                 android:id="@+id/status"

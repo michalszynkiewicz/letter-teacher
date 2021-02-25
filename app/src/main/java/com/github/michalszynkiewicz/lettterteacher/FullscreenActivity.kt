@@ -41,7 +41,7 @@ class FullscreenActivity : AppCompatActivity() {
         R.drawable.okno, R.drawable.pomidor, R.drawable.rower, R.drawable.sowa, R.drawable.trabka,
         R.drawable.usta, R.drawable.waga, R.drawable.zebra
     )
-    
+
     val examples = arrayOf(
         "arbuz", "bułka", "cytryna", "drzewo",
         "ekran", "foka", "gołąb", "hak", "igły",
@@ -66,6 +66,19 @@ class FullscreenActivity : AppCompatActivity() {
                 // Hide the nav bar and status bar
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_FULLSCREEN)
+
+        val changeLetters = findViewById<Button>(R.id.changeLetterSize)
+        val defaultTransformationMethod = changeLetters.transformationMethod // todo: not nice
+
+        changeLetters.transformationMethod = null;
+
+        changeLetters.setOnClickListener {
+            buttons.forEach { buttonId ->
+                val letterButton = findViewById<Button>(buttonId)
+                letterButton.transformationMethod =
+                    if (letterButton.transformationMethod == null) defaultTransformationMethod else null
+            }
+        }
 
         initializeButton(0, R.id.button1)
         initializeButton(1, R.id.button2)
@@ -94,6 +107,7 @@ class FullscreenActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun initializeButton(number: Int, buttonId: Int) {
         val clickButton: Button = findViewById(buttonId);
+        clickButton.transformationMethod = null
         clickButton.setOnClickListener {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
