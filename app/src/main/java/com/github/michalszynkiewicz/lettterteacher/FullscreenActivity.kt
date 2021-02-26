@@ -22,9 +22,10 @@ import kotlin.random.Random
  * status bar and navigation/system bar) with user interaction.
  */
 class FullscreenActivity : AppCompatActivity() {
-    private lateinit var fullscreenContent: TextView
 
     private lateinit var tts: TextToSpeech
+
+    var locked = false
 
     private var correctAnswer = 1
 
@@ -42,6 +43,13 @@ class FullscreenActivity : AppCompatActivity() {
         R.drawable.usta, R.drawable.waga, R.drawable.zebra
     )
 
+    val letterPronunciation = arrayOf(
+        "a", "be", "ce", "de",
+        "e", "ef", "gie", "ha", "i",
+        "jot", "ka", "el", "em", "en",
+        "o", "pe", "er", "es", "te",
+        "u", "wu", "zet"
+    )
     val examples = arrayOf(
         "arbuz", "bułka", "cytryna", "drzewo",
         "ekran", "foka", "gołąb", "hak", "igły",
@@ -89,7 +97,7 @@ class FullscreenActivity : AppCompatActivity() {
             if (it != TextToSpeech.ERROR) {
                 tts.language = Locale.forLanguageTag("pl")
                 tts.setPitch(1.3f)
-                tts.setSpeechRate(0.6f)
+                tts.setSpeechRate(0.7f)
                 initNewTask()
             } else {
                 Toast.makeText(this, "Usługa czytania tekstu jest niedostępna", Toast.LENGTH_LONG).show()
@@ -109,30 +117,38 @@ class FullscreenActivity : AppCompatActivity() {
         val clickButton: Button = findViewById(buttonId);
         clickButton.transformationMethod = null
         clickButton.setOnClickListener {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            val success = correctAnswer == number;
-            clickButton.setBackgroundColor(clickButton.context.getColor(if (success) R.color.green else R.color.red))
-            attemptCount++;
-            successCount += if (success) 1 else 0;
-            val status = findViewById<TextView>(R.id.status)
-            status.setBackgroundColor(getColor(R.color.black))
-            status.text = """Dobrze $successCount z $attemptCount"""
+            if (!locked) {
+                locked = true
+                window.setFlags(
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                );
+                val success = correctAnswer == number;
+                clickButton.setBackgroundColor(clickButton.context.getColor(if (success) R.color.green else R.color.red))
+                attemptCount++;
+                successCount += if (success) 1 else 0;
+                val status = findViewById<TextView>(R.id.status)
+                status.setBackgroundColor(getColor(R.color.black))
+                status.text = """Dobrze $successCount z $attemptCount"""
 
-            var timeToNext : Long = 2000
-            if (success) {
-                tts.speak("Świetnie!", TextToSpeech.QUEUE_ADD, null);
-            } else {
-                val properButton = findViewById<Button>(buttons[correctAnswer])
-                properButton.setBackgroundColor(getColor(R.color.light_blue_600))
-                tts.speak("To, niestety, nie jest dobra odpowiedź!", TextToSpeech.QUEUE_ADD, null);
-                timeToNext = 4000
+                var timeToNext: Long = 2000
+                if (success) {
+                    tts.speak("Świetnie!", TextToSpeech.QUEUE_ADD, null);
+                } else {
+                    val properButton = findViewById<Button>(buttons[correctAnswer])
+                    properButton.setBackgroundColor(getColor(R.color.light_blue_600))
+                    tts.speak(
+                        "To, niestety, nie jest dobra odpowiedź!",
+                        TextToSpeech.QUEUE_ADD,
+                        null
+                    );
+                    timeToNext = 4000
+                }
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    initNewTask()
+                }, timeToNext)
             }
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                initNewTask()
-            }, timeToNext)
         }
     }
 
@@ -159,7 +175,8 @@ class FullscreenActivity : AppCompatActivity() {
             }
         }
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-        tts.speak("""$correctLetter jak ${examples[randomLetter]}""", TextToSpeech.QUEUE_ADD, null)
+        tts.speak("""${letterPronunciation[randomLetter]} jak ${examples[randomLetter]}""", TextToSpeech.QUEUE_ADD, null)
+        locked = false
     }
 
     private fun differentLetters(correctLetter: Char): Array<Char?> {
